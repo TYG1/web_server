@@ -18,6 +18,9 @@ def handle_client(client)
       file = File.open('web/501.html')
     end
 
+    if req.path.nil?
+      break
+    end
     puts "Req path: #{req.path}"
     path = ''
     if req.path == "/"
@@ -37,28 +40,33 @@ def handle_client(client)
     end
 
     #find content type
-    content_type = nil
-    extension = path.split('.')[-1]
-    if extension == 'html'
-      content_type = 'text/html'
-    elsif extension == 'css'
-      content_type = 'text/css'
-    elsif extension == 'jpg'
-      content_type = 'image/jpeg'
-    elsif extension == 'png'
-      content_type = 'image/png'
-    else
-      content_type = 'text/plain'
-    end
+    content_type = find_content_type(path)
+
 
     response = file.read
     header = "HTTP/1.1 200 OK\r\nContent-Type: #{content_type}\r\nContent-Length: #{response.length}\r\nConnection: Keep-Alive\r\n\r\n"
     response = header + response
-    client.print(response) # Send the time to the client
+    client.print(response) rescue return# Send the time to the client
     keep_alive = req.keep_alive?
     puts "Keep Alive? #{keep_alive}"
   end
   client.close
+end
+
+
+def find_content_type(path)
+  extension = path.split('.')[-1]
+  if extension == 'html'
+    content_type = 'text/html'
+  elsif extension == 'css'
+    content_type = 'text/css'
+  elsif extension == 'jpg'
+    content_type = 'image/jpeg'
+  elsif extension == 'png'
+    content_type = 'image/png'
+  else
+    content_type = 'text/plain'
+  end
 end
 
 
@@ -69,6 +77,11 @@ if ARGV[0].nil?
 end
 
 server = TCPServer.open(ARGV[0])
+loop {
+  client = server.accept
+  handle_client(client)
+
+}
 
 =begin
 loop {
@@ -77,8 +90,3 @@ loop {
   end
 }
 =end
-loop {
-  client = server.accept
-  handle_client(client)
-
-}

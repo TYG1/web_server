@@ -77,16 +77,16 @@ if ARGV[0].nil?
 end
 
 server = TCPServer.open(ARGV[0])
+=begin
 loop {
   client = server.accept
   handle_client(client)
 
 }
 
-=begin
+=end
 loop {
   Thread.start(server.accept) do |client|
     handle_client(client)
   end
 }
-=end

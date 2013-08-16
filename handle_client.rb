@@ -1,10 +1,10 @@
 require_relative 'http_constants'
 
-def set_path(req)
-  if req.path == '/'
+def set_path(path)
+  if path == '/'
     INDEX_PATH
   else
-    WEB_FOLDER + req.path
+    WEB_FOLDER + path
   end
 end
 
@@ -56,7 +56,7 @@ def handle_client(client)
     #debug
     puts "Request path: #{req.path}"
 
-    path = set_path(req)
+    path = set_path(req.path)
 
     #debug
     puts path

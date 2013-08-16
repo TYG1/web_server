@@ -1,33 +1,36 @@
 require_relative 'http_constants'
 
 def set_path(req)
-  if req.path == "/"
-    path = INDEX_PATH
+  if req.path == '/'
+    INDEX_PATH
   else
-    path = WEB_FOLDER + req.path
+    WEB_FOLDER + req.path
   end
 end
 
 def build_response(content_type, file, status, status_text)
   response = file.read
   header = "HTTP/1.1 #{status} #{status_text}\r\nContent-Type: #{content_type}\r\nContent-Length: #{response.length}\r\nConnection: Keep-Alive\r\n\r\n"
-  response = header + response
+  header + response
 end
 
 def find_content_type(path)
   extension = path.split('.')[-1]
-  if extension == 'html'
-    content_type = 'text/html'
-  elsif extension == 'css'
-    content_type = 'text/css'
-  elsif extension == 'jpg'
-    content_type = 'image/jpeg'
-  elsif extension == 'png'
-    content_type = 'image/png'
-  else
-    content_type = 'text/plain'
+  case extension
+    when 'html'
+      content_type = 'text/html'
+    when 'css'
+      content_type = 'text/css'
+    when 'jpg'
+      content_type = 'image/jpeg'
+    when 'png'
+      content_type = 'image/png'
+    else
+      content_type = 'text/plain'
   end
+
 end
+
 
 def close_connection(client)
   client.close
@@ -78,6 +81,8 @@ def handle_client(client)
       close_connection(client) and return
     end
     keep_alive = req.keep_alive?
+
+    #debug
     puts "Keep Alive? #{keep_alive}"
   end
   close_connection client

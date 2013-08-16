@@ -3,7 +3,6 @@ require 'net/http'
 require 'webrick'
 require 'test/unit'
 require_relative 'handle_client'
-require_relative 'constants'
 
 
 # MAIN

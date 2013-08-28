@@ -8,6 +8,7 @@ def set_path(path)
   end
 end
 
+
 def build_response(content_type, file, status, status_text)
   response = file.read
   header = "HTTP/1.1 #{status} #{status_text}\r\nContent-Type: #{content_type}\r\nContent-Length: #{response.length}\r\nConnection: Keep-Alive\r\n\r\n"
@@ -36,6 +37,10 @@ def close_connection(client)
   client.close
 end
 
+def file_exists?(path)
+  File.exists?(path)
+end
+
 def handle_client(client)
   keep_alive = true
   while keep_alive
@@ -61,7 +66,7 @@ def handle_client(client)
     #debug
     puts path
 
-    if File.exists?(path)
+    if file_exists?(path)
       status = HTTP_OK
       status_text = HTTP_OK_TEXT
       file = File.open(path)

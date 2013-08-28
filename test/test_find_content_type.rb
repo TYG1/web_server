@@ -41,4 +41,52 @@ class TestFindContentType < Test::Unit::TestCase
     assert_equal expected, find_content_type(path)
   end
 
+  def test_other1
+    path = '/simple.htmi'
+    expected = 'text/plain'
+    assert_equal expected, find_content_type(path)
+  end
+
+  def test_other2
+    path = '/simpsadsag'
+    expected = 'text/plain'
+    assert_equal expected, find_content_type(path)
+  end
+
+  def test_other3
+    path = '/simple.2321ewfewf'
+    expected = 'text/plain'
+    assert_equal expected, find_content_type(path)
+  end
+
+  def test_other4
+    path = '/simple.....pndsawdwq'
+    expected = 'text/plain'
+    assert_equal expected, find_content_type(path)
+  end
+
+  def test_other5
+    path = 'simple.pndsadsag'
+    expected = 'text/plain'
+    assert_equal expected, find_content_type(path)
+  end
+
+  def test_other6
+    path = '4'
+    expected = 'text/plain'
+    assert_equal expected, find_content_type(path)
+  end
+
+  def test_other7
+    path = '////simple.pndsadsag'
+    expected = 'text/plain'
+    assert_equal expected, find_content_type(path)
+  end
+
+  def test_other8
+    path = '/simp////le.pndsadsag'
+    expected = 'text/plain'
+    assert_equal expected, find_content_type(path)
+  end
+
 end

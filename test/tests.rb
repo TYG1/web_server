@@ -1,20 +1,12 @@
 require 'test/unit'
 require_relative '../handle_client'
+require_relative 'test_build_response'
+require_relative 'test_find_content_type'
 
 
 class TestHandleClient < Test::Unit::TestCase
-  def test_html
-    path = '/simple.html'
-    expected = 'text/html'
-    assert_equal expected, find_content_type(path)
-  end
 
-  def test_css
-    path = '/simple.css'
-    expected = 'text/css'
-    assert_equal expected, find_content_type(path)
-  end
-
+  #set path tests
   def test_set_path_root
     path = '/'
     expected =  INDEX_PATH
@@ -26,5 +18,8 @@ class TestHandleClient < Test::Unit::TestCase
     expected =  WEB_FOLDER + path
     assert_equal set_path(path), expected
   end
+  #######################
+
+
 
 end
